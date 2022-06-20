@@ -1,0 +1,21 @@
+# Rubik subgoal generator; k = 4
+
+run.job_class = @jobs.TrainHfForRubikGoal
+
+TrainHfForRubikGoal.n_iterations = 6000
+TrainHfForRubikGoal.epochs_per_iteration = 1
+TrainHfForRubikGoal.eval_every_n_iterations = 20
+TrainHfForRubikGoal.generate_every_n_iterations = 20
+TrainHfForRubikGoal.fresh_dataset_per_iteration = True
+
+TrainHfForRubikGoal.batch_size = 32
+TrainHfForRubikGoal.learning_rate = 3e-4
+TrainHfForRubikGoal.lr_schedule = @InverseSqrtWithWarmup
+InverseSqrtWithWarmup.warmup_steps = 4000
+
+TrainHfForRubikGoal.init_hf_seed = 42
+TrainHfForRubikGoal.duplicate_hf_logs = True
+
+gen_rubik_data.n_random_moves.value = 20
+gen_rubik_data.subgoal_episode_skipped.value = 7
+generate_subgoal_learning_data.distances = [4]

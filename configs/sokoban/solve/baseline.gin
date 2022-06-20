@@ -1,0 +1,34 @@
+# Solving Sokoban with baseline policy; configurable board size.
+
+# You need to specify the following parameters in command line (see README.md):
+# SokobanPolicyBaseline.model_id
+# ValueEstimator.model_id
+
+# run parameters:
+run.job_class = @jobs.JobSolveSokoban
+
+# Env params:
+Sokoban.num_boxes = 4
+Sokoban.dim_room = (12, 12)
+
+# Params for JobSolveSokoban:
+JobSolveSokoban.n_jobs = 1000
+JobSolveSokoban.n_parallel_workers = 30
+JobSolveSokoban.batch_size = 100
+JobSolveSokoban.solver_class = @solvers.BestFSSolverSokoban
+JobSolveSokoban.budget_checkpoints = [50, 100, 200, 300, 500, 1000, 2000, 3000, 5000]
+JobSolveSokoban.log_solutions_limit = 0
+JobSolveSokoban.recursion_limit = 10000
+
+# Params for PolicyGoalBuilderSokoban:
+PolicyGoalBuilderSokoban.policy_class = @policies.SokobanPolicyBaseline
+
+# Params for BestFSSolverSokoban:
+BestFSSolverSokoban.total_confidence_level = 0.98
+BestFSSolverSokoban.internal_confidence_level = None
+BestFSSolverSokoban.max_goals = None
+BestFSSolverSokoban.max_steps = None
+BestFSSolverSokoban.max_tree_depth = 5000
+BestFSSolverSokoban.max_tree_size = 5000
+BestFSSolverSokoban.value_estimator_class = @value_estimators.ValueEstimator
+BestFSSolverSokoban.goal_builder_class = @goal_builders.PolicyGoalBuilderSokoban

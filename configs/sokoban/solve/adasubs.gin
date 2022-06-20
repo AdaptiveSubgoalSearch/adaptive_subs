@@ -1,0 +1,53 @@
+# AdaSubS solving Sokoban; configurable goal builders.
+
+# You need to specify the following parameters in command line (see README.md):
+# PolicyGoalBuilderSokobanPixelDiff.verificator_ckpt_path
+# BestFSIterativeSolverSokoban.goal_builders_list
+# BestFSIterativeSolverSokoban.max_steps_list
+# SokobanConditionalPolicy.model_id
+# ValueEstimator.model_id
+
+#run parameters:
+run.job_class = @jobs.JobSolveSokoban
+
+#Env params:
+Sokoban.dim_room = (12, 12)
+Sokoban.num_boxes = 4
+
+#Params for JobSolveSokoban:
+JobSolveSokoban.n_jobs = 1000
+JobSolveSokoban.n_parallel_workers = 30
+JobSolveSokoban.batch_size = 100
+JobSolveSokoban.solver_class = @solvers.BestFSIterativeSolverSokoban
+JobSolveSokoban.budget_checkpoints = [50, 100, 200, 300, 500, 1000, 2000, 3000, 5000]
+JobSolveSokoban.log_solutions_limit = 2
+JobSolveSokoban.env_seed = 6378165
+JobSolveSokoban.recursion_limit = 100000
+JobSolveSokoban.boards_dataset = None
+JobSolveSokoban.boards_indices = None
+
+#Params for BestFSSolverSokoban:
+BestFSIterativeSolverSokoban.total_confidence_level = 0.98
+BestFSIterativeSolverSokoban.internal_confidence_level = 0.9
+BestFSIterativeSolverSokoban.max_goals = 1
+BestFSIterativeSolverSokoban.max_steps_in_solution_stage = 18
+BestFSIterativeSolverSokoban.max_tree_depth = 5000
+BestFSIterativeSolverSokoban.max_tree_size = 5000
+BestFSIterativeSolverSokoban.value_estimator_class = @value_estimators.ValueEstimator
+BestFSIterativeSolverSokoban.goal_builder_class = @goal_builders.PolicyGoalBuilderSokobanPixelDiff
+BestFSIterativeSolverSokoban.use_adaptive_iterations = 'force-longest'
+
+#Params for PolicyGoalBuilderSokobanPixelDiff:
+PolicyGoalBuilderSokobanPixelDiff.goal_generating_network_class = @goal_generating_networks.GoalPredictorPixelDiff
+PolicyGoalBuilderSokobanPixelDiff.conditional_policy_network_class = @policies.SokobanConditionalPolicy
+PolicyGoalBuilderSokobanPixelDiff.max_goal_builder_tree_depth = 12
+PolicyGoalBuilderSokobanPixelDiff.max_goal_builder_tree_size = None
+PolicyGoalBuilderSokobanPixelDiff.use_beam_search = True
+PolicyGoalBuilderSokobanPixelDiff.num_beams = 16
+
+PolicyGoalBuilderSokobanPixelDiff.gather_data_for_verificator = False
+PolicyGoalBuilderSokobanPixelDiff.max_data_points_per_part = 20000
+PolicyGoalBuilderSokobanPixelDiff.use_verificator_for_solving = True
+PolicyGoalBuilderSokobanPixelDiff.verificator_batch_size = 256
+PolicyGoalBuilderSokobanPixelDiff.ver_trash_th = 0.1
+PolicyGoalBuilderSokobanPixelDiff.ver_certainty_th = 0.99

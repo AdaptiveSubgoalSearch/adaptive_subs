@@ -1,0 +1,38 @@
+# AdaSubS solve INT, proof length 15
+
+# You need to specify the following parameters in command line (see README.md):
+# BestFSIterativeSolverINT.goal_builders_list
+# ConditionalPolicyINT.checkpoint_path
+# ValueEstimatorINT.checkpoint_path
+# VerificatorInt.checkpoint_path
+
+run.job_class = @jobs.JobSolveINT
+
+JobSolveINT.n_jobs = 1000
+JobSolveINT.n_parallel_workers = 15
+JobSolveINT.batch_size = 100
+JobSolveINT.solver_class = @solvers.BestFSIterativeSolverINT
+JobSolveINT.budget_checkpoints = [5, 10, 15, 20, 25, 30, 40, 50, 75, 100, 200, 400]
+JobSolveINT.real_budget_checkpoints = [5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 100, 200, 400, 500, 1000, 2000, 5000]
+JobSolveINT.log_solutions_limit = 1000
+
+BestFSIterativeSolverINT.max_tree_depth = 150
+BestFSIterativeSolverINT.max_tree_size = 400
+BestFSIterativeSolverINT.value_estimator_class = @value_estimators.ValueEstimatorINT
+BestFSIterativeSolverINT.goal_builder_class = @goal_builders.GoalBuilderINT
+BestFSIterativeSolverINT.use_adaptive_iterations = 'force-longest'
+
+GoalBuilderINT.generator_class = @goal_builders.GoalGeneratorINT
+GoalBuilderINT.policy_class = @policies.ConditionalPolicyINT
+GoalBuilderINT.verificator_class = @goal_verificators.VerificatorInt
+GoalBuilderINT.verificator_thresholds = [0.1, 1.]
+
+ConditionalPolicyINT.max_steps = 5
+
+GoalGeneratorINT.n_subgoals = 3
+GoalGeneratorINT.num_beams = 16
+GoalGeneratorINT.temperature = 1
+
+generate_problems.proof_length = 15
+generate_problems.n_workers = 30
+get_available_axioms.axiom_set_name = 'ordered_field'

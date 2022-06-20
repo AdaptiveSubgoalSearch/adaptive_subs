@@ -1,0 +1,34 @@
+# Train Sokoban subgoal generator; customizable k
+
+# You need to specify the following parameters in command line (see README.md):
+# JobTrainSokobanPixelDiff.steps_into_future
+# JobTrainSokobanPixelDiff.dataset
+
+# run parameters:
+run.job_class = @jobs.JobTrainSokobanPixelDiff
+
+# Env params:
+Sokoban.num_boxes = 4
+Sokoban.dim_room = (12, 12)
+
+# Params for ConditionalGoalPredictorSokoban:
+GoalPredictorPixelDiff.num_layers = 7
+GoalPredictorPixelDiff.batch_norm = True
+GoalPredictorPixelDiff.learning_rate = 1e-4
+GoalPredictorPixelDiff.kernel_size = (3, 3)
+GoalPredictorPixelDiff.weight_decay = 1e-4
+
+# Params for JobTrainSokoban:
+JobTrainSokobanPixelDiff.dump_folder = 'out/train'
+JobTrainSokobanPixelDiff.epochs = 200
+JobTrainSokobanPixelDiff.epochs_checkpoints = [10, 25, 50, 75, 100, 125, 150, 175, 200]
+
+# Params for DataCreatorSokoban:
+# How many trajectories will be used in training (useful to limit for very large data sets):
+DataCreatorSokobanPixelDiff.keep_trajectories = 1.
+# How many samples from each trajectory will be used in training (useful to limit for very large data sets):
+DataCreatorSokobanPixelDiff.keep_samples = 0.1
+DataCreatorSokobanPixelDiff.validation_split = 0.1
+# Parallel workers are used to speed up data preparation:
+DataCreatorSokobanPixelDiff.n_parallel_workers = 28
+DataCreatorSokobanPixelDiff.batch_size = 20000

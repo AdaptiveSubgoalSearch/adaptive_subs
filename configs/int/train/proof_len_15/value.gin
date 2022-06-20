@@ -1,0 +1,26 @@
+# INT value function; proof length 15
+# Checkpoint will be periodically written to directory 'out/value/transformer'.
+
+
+run.job_class = @jobs.TrainHfForIntValue
+
+TrainHfForIntValue.n_iterations = 1750
+TrainHfForIntValue.epochs_per_iteration = 1
+TrainHfForIntValue.eval_every_n_iterations = 5
+TrainHfForIntValue.n_proofs = 2000
+TrainHfForIntValue.n_val_proofs = 100
+TrainHfForIntValue.fresh_dataset_per_iteration = True
+TrainHfForIntValue.n_samples_per_proof = 2
+
+TrainHfForIntValue.batch_size = 32
+TrainHfForIntValue.learning_rate = 3e-4
+TrainHfForIntValue.lr_schedule = @InverseSqrtWithWarmup
+InverseSqrtWithWarmup.warmup_steps = 4000
+
+generate_problems.proof_length = 15
+generate_problems.n_workers = 8
+
+TrainHfForIntValue.fp16 = True
+TrainHfForIntValue.init_hf_seed = 42
+TrainHfForIntValue.duplicate_hf_logs = True
+TrainHfForIntValue.output_dir = 'out/value'

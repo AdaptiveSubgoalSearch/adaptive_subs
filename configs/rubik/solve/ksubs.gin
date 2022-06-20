@@ -1,0 +1,29 @@
+# BF-kSubS solving Rubik's cube; k = 4
+
+# You need to specify the following parameters in command line (see README.md):
+# GoalGeneratorRubik.generator_checkpoint_path
+# ConditionalPolicyRubik.checkpoint_path
+# ValueEstimatorRubik.checkpoint_path
+
+run.job_class = @jobs.JobSolveRubik
+
+JobSolveRubik.n_jobs = 1000
+JobSolveRubik.n_parallel_workers = 3
+JobSolveRubik.batch_size = 5
+JobSolveRubik.solver_class = @solvers.BestFSSolverRubik
+JobSolveRubik.budget_checkpoints = [50, 100, 200, 500, 1000, 2000, 5000]
+JobSolveRubik.log_solutions_limit = 100
+
+BestFSSolverRubik.max_tree_depth = 80
+BestFSSolverRubik.max_tree_size = 1500
+BestFSSolverRubik.value_estimator_class = @value_estimators.ValueEstimatorRubik
+BestFSSolverRubik.goal_builder_class = @goal_builders.GoalBuilderRubik
+
+GoalBuilderRubik.generator_class = @goal_builders.GoalGeneratorRubik
+GoalBuilderRubik.policy_class = @policies.ConditionalPolicyRubik
+
+GoalGeneratorRubik.n_subgoals = 3
+GoalGeneratorRubik.num_beams = 32
+GoalGeneratorRubik.temperature = 0.5
+
+ConditionalPolicyRubik.max_steps = 7

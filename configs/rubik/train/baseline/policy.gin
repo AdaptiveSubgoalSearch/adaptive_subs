@@ -1,0 +1,21 @@
+# Rubik baseline policy; k = 4
+
+run.job_class = @jobs.TrainHfForRubikValidatePolicy
+TrainHfForRubikValidatePolicy.is_brutal = True
+
+TrainHfForRubikValidatePolicy.n_iterations = 6000
+TrainHfForRubikValidatePolicy.epochs_per_iteration = 1
+TrainHfForRubikValidatePolicy.eval_every_n_iterations = 20
+TrainHfForRubikValidatePolicy.generate_every_n_iterations = 20
+TrainHfForRubikValidatePolicy.fresh_dataset_per_iteration = True
+
+TrainHfForRubikValidatePolicy.batch_size = 32
+TrainHfForRubikValidatePolicy.learning_rate = 3e-4
+TrainHfForRubikValidatePolicy.lr_schedule = @InverseSqrtWithWarmup
+InverseSqrtWithWarmup.warmup_steps = 4000
+
+TrainHfForRubikValidatePolicy.init_hf_seed = 7465743
+TrainHfForRubikValidatePolicy.duplicate_hf_logs = True
+
+gen_rubik_data.n_random_moves.value = 20
+gen_rubik_data.subgoal_episode_skipped.value = 1

@@ -1,0 +1,22 @@
+# MCTS (AlphaZero) solve INT proof length 15
+
+# You need to specify the following parameters in command line (see README.md):
+# StochasticMCTSAgent.n_passes
+# MCTSVanillaGoalBuilderInt.checkpoint_path
+# JobMCTSSolveInt.value_estimator_checkpoint
+
+run.job_class = @jobs.JobMCTSSolveInt
+
+JobMCTSSolveInt.goal_builder = @MCTSVanillaGoalBuilderInt()
+
+JobMCTSSolveInt.n_proofs = 500
+JobMCTSSolveInt.discount = 0.99
+JobMCTSSolveInt.time_limit = 24
+
+MCTSVanillaGoalBuilderInt.num_beams = 16
+MCTSVanillaGoalBuilderInt.num_goals = 4
+StochasticMCTSAgent.exploration_weight = 1
+
+generate_problems.proof_length = 15
+generate_problems.n_workers = 8
+get_available_axioms.axiom_set_name = 'ordered_field'

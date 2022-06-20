@@ -1,0 +1,20 @@
+# Rubik value function
+
+run.job_class = @jobs.TrainHfForRubikValue
+
+TrainHfForRubikValue.n_iterations = 6000
+TrainHfForRubikValue.epochs_per_iteration = 1
+TrainHfForRubikGoal.eval_every_n_iterations = 20
+TrainHfForRubikGoal.generate_every_n_iterations = 20
+TrainHfForRubikValue.fresh_dataset_per_iteration = True
+
+TrainHfForRubikValue.batch_size = 32
+TrainHfForRubikValue.learning_rate = 3e-4
+TrainHfForRubikValue.lr_schedule = @InverseSqrtWithWarmup
+InverseSqrtWithWarmup.warmup_steps = 4000
+
+TrainHfForRubikValue.init_hf_seed = 5758
+TrainHfForRubikValue.duplicate_hf_logs = True
+
+gen_rubik_data.n_random_moves.value = 25
+gen_rubik_data.subgoal_episode_skipped.value = 1

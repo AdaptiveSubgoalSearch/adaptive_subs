@@ -1,0 +1,28 @@
+# MCTS-kSubS solve INT proof length 15; k = 3
+
+# You need to specify the following parameters in command line (see README.md):
+# StochasticMCTSAgent.n_passes
+# GoalGeneratorINT.generator_checkpoint_path,
+# ConditionalPolicyINT.checkpoint_path
+# JobMCTSSolveInt.value_estimator_checkpoint
+
+run.job_class = @jobs.JobMCTSSolveInt
+
+JobMCTSSolveInt.goal_builder = @MCTSGoalBuilderInt()
+JobMCTSSolveInt.n_proofs = 1000
+JobMCTSSolveInt.discount = 0.99
+JobMCTSSolveInt.time_limit = 8
+
+MCTSGoalBuilderInt.goal_generator = @GoalGeneratorINT()
+
+GoalGeneratorINT.num_beams = 16
+GoalGeneratorINT.n_subgoals = 4
+
+MCTSGoalBuilderInt.conditional_policy = @ConditionalPolicyINT()
+ConditionalPolicyINT.max_steps = 4
+
+StochasticMCTSAgent.exploration_weight = 1
+
+generate_problems.proof_length = 15
+generate_problems.n_workers = 8
+get_available_axioms.axiom_set_name = 'ordered_field'

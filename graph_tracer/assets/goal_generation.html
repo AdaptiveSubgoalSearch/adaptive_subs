@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      Graph visualization
+    </title>
+
+    <style type="text/css">
+      body {
+        font: 10pt sans;
+      }
+
+      #mynetwork {
+        width: 1200px;
+        height: 700px;
+        border: 1px solid lightgray;
+      }
+    </style>
+    <script
+      type="text/javascript"
+      src="vis-network.min.js"
+    ></script>
+
+    <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript">
+    function load_title() {
+        document.getElementById("title").innerText = title;
+    }
+    </script>
+    
+    <script type="text/javascript">
+      var network = null;
+      var nodes_data = null;
+      var selected_node = null;
+      var directionInput = document.getElementById("direction");
+
+      function destroy() {
+        if (network !== null) {
+          network.destroy();
+          network = null;
+        }
+      }
+
+      function draw() {
+        destroy();
+        var connectionCount = [];
+        // create a network
+        var container = document.getElementById("mynetwork");
+        var data = {
+          nodes: nodes,
+          edges: edges,
+        };
+
+        var options = {
+          edges: {
+            smooth: {
+              type: "cubicBezier",
+              forceDirection:
+                directionInput.value == "UD" || directionInput.value == "DU"
+                  ? "vertical"
+                  : "horizontal",
+              roundness: 0.4,
+            },
+          },
+          layout: {
+            hierarchical: {
+              direction: directionInput.value,
+            },
+          },
+          physics: false,
+        };
+        network = new vis.Network(container, data, options);
+
+        // add event listeners
+        network.on("select", function (params) {
+        document.getElementById("curr_state").src = partial_src[params.nodes]
+        document.getElementById("parent").src = parent_src[params.nodes]
+        document.getElementById("selection").innerText = info[params.nodes]
+        });
+      }
+    </script>
+  </head>
+
+  <body onload="draw(); load_title();">
+    <h2><p id="title"></p></h2>
+
+<!--    <div style="width: 700px; font-size: 14px; text-align: justify">
+      Graph browser
+    </div>-->
+    <p>
+      <input type="button" id="btn-UD" value="Up-Down" />
+      <input type="button" id="btn-DU" value="Down-Up" />
+      <input type="button" id="btn-LR" value="Left-Right" />
+      <input type="button" id="btn-RL" value="Right-Left" />
+      <input type="hidden" id="direction" value="UD" />
+    </p>
+
+    <table style="width:100%">
+    <tr>
+    <td>
+    <div id="mynetwork"></div>
+    
+    <script language="JavaScript">
+      var directionInput = document.getElementById("direction");
+      var btnUD = document.getElementById("btn-UD");
+      btnUD.onclick = function () {
+        directionInput.value = "UD";
+        draw();
+      };
+      var btnDU = document.getElementById("btn-DU");
+      btnDU.onclick = function () {
+        directionInput.value = "DU";
+        draw();
+      };
+      var btnLR = document.getElementById("btn-LR");
+      btnLR.onclick = function () {
+        directionInput.value = "LR";
+        draw();
+      };
+      var btnRL = document.getElementById("btn-RL");
+      btnRL.onclick = function () {
+        directionInput.value = "RL";
+        draw();
+      };
+    </script>
+     </div>
+     </td>
+     <td>  
+    Input board:<br>
+    <img id="input_board"  height="220" src="images/root.png"><br>
+    Current state:<br>
+    <img id="curr_state" height="220"><br>
+    Parent state:<br>
+    <img id="parent" height="220">
+    <b><h3><p id="selection"></h3></p></b>
+    </td>
+    </tr>
+    </table>
+
+</div>
+  </body>
+</html>

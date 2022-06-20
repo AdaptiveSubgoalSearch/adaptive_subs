@@ -1,0 +1,28 @@
+# INT conditional policy; k = 3; proof length 15
+# Checkpoint will be periodically written to directory 'out/conditional_policy/transformer'.
+
+run.job_class = @jobs.TrainHfForIntPolicyPointer
+
+TrainHfForIntPolicyPointer.n_iterations = 1050
+TrainHfForIntPolicyPointer.epochs_per_iteration = 1
+TrainHfForIntPolicyPointer.eval_every_n_iterations = 5
+TrainHfForIntPolicyPointer.n_proofs = 1000
+TrainHfForIntPolicyPointer.n_val_proofs = 100
+TrainHfForIntPolicyPointer.fresh_dataset_per_iteration = True
+TrainHfForIntPolicyPointer.n_samples_per_proof = 4
+TrainHfForIntPolicyPointer.max_steps_into_future = 3
+
+TrainHfForIntPolicyPointer.batch_size = 32
+TrainHfForIntPolicyPointer.learning_rate = 3e-4
+TrainHfForIntPolicyPointer.lr_schedule = @InverseSqrtWithWarmup
+InverseSqrtWithWarmup.warmup_steps = 4000
+
+generate_problems.proof_length = 15
+generate_problems.n_workers = 8
+get_available_axioms.axiom_set_name = 'ordered_field'
+
+TrainHfForIntPolicyPointer.fp16 = True
+TrainHfForIntPolicyPointer.init_hf_seed = 42
+TrainHfForIntPolicyPointer.duplicate_hf_logs = True
+TrainHfForIntPolicyPointer.output_dir = 'out/conditional_policy'
+ActionRepresentationPointer.vanilla = False

@@ -1,0 +1,44 @@
+Bootstrap: docker
+
+From: tensorflow/tensorflow:latest-gpu
+
+%post
+
+    # run dpkg (behind other tools like apt-get) without interactive dialogue
+
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get -y update
+
+    apt-get -y install git ffmpeg virtualenv libopenmpi-dev openmpi-bin openmpi-common python3-pip
+
+    # upgrade system pip, see: https://stackoverflow.com/a/49836753/7983111
+
+    python3 -m pip install -U pip
+
+    # alpacka requirements
+
+    python3 -m pip install cloudpickle==1.6.0 gin-config==0.4.0 gym==0.18.0 neptune-client==0.4.130 numpy==1.19.5 pylint==2.7.4 pylint_quotes==0.2.1 pytest==6.2.3 randomdict==0.2.0 ray==0.8.5 ray[rllib] tensorflow==2.4.1 gym_pycolab tblib==1.7.0 joblib==1.0.1
+
+    python3 -m pip install -e git+https://gitlab.com/awarelab/gym-sokoban.git#egg=gym-sokoban
+
+    # install essentials
+
+    python3 -m pip install attrs==20.3.0 ipdb tqdm==4.60.0 mpi4py psutil==5.8.0
+
+    # install bsuite
+
+    python3 -m pip install git+git://github.com/deepmind/bsuite.git
+
+    # install mrunner
+
+    python3 -m pip install git+https://gitlab.com/awarelab/mrunner.git
+
+
+    # install transformers-related stuff
+
+    # Install torch, but make sure that torch+CUDA versions are compatible with GPU of Turing architecture
+    # see: https://discuss.pytorch.org/t/cuda-error-cublas-status-internal-error-when-calling-cublascreate-handle/114341/9
+    pip3 install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+    python3 -m pip install transformers
