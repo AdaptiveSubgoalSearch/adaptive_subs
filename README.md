@@ -1,5 +1,15 @@
 # Fast and Precise: Adjusting Planning Horizon with Adaptive Subgoal Search
 
+This repository contains the code used for experiments in the paper [Fast and Precise: Adjusting Planning Horizon with Adaptive Subgoal Search](https://arxiv.org/pdf/2206.00702.pdf).
+For a comprehensive overview of the project, visit our website: [https://sites.google.com/view/adaptivesubgoalsearch/](https://sites.google.com/view/adaptivesubgoalsearch/).
+Check also a quick demonstration in our [colab notebook](https://colab.research.google.com/drive/1qdHaTSegZRHMy6nRHXXFjY0DjKSTZQ0x?usp=sharing).
+
+## Abstract
+
+Complex reasoning problems contain states that vary in the computational cost required to determine a good action plan. Taking advantage of this property, we propose Adaptive Subgoal Search (AdaSubS), a search method that adaptively adjusts the planning horizon. To this end, AdaSubS generates diverse sets of subgoals at different distances. A verification mechanism is employed to filter out unreachable subgoals swiftly, allowing to focus on feasible further subgoals. In this way, AdaSubS benefits from the efficiency of planning with longer subgoals and the fine control with the shorter ones, and thus scales well to difficult planning problems.
+
+We show that AdaSubS significantly surpasses hierarchical planning algorithms on three complex reasoning tasks: Sokoban, the Rubik's Cube, and inequality proving benchmark INT.
+
 # Requirements
 
 ## Source code
@@ -353,21 +363,3 @@ python3 runner.py \
 --config="ValueEstimatorRubik.checkpoint_path=\"${KSUBS_RESOURCES}/rubik/value\"" \
 --config="VanillaPolicyRubik.checkpoint_path=\"${KSUBS_RESOURCES}/rubik/vanilla_policy\""
 ```
-
-# Results
-
-We present the main results below. For more results see the paper.
-
-<p>
-<img src="assets/images/int_results.png" width="45%" alt="Figure 1: INT" title="INT">
-<img src="assets/images/rubik_results.png" width="45%" alt="Figure 1: Rubik's cube" title="Rubik's cube">
-</p>
-
-<p align="center">
-<img src="assets/images/sokoban_results.png" width="60%" alt="Figure 1: Sokoban" title="Sokoban">
-</p>
-
-*Figure 1: The performance of Subgoal Search.*
-* *(top, left) AdaSubS sets new state-of-the art on INT. It fails on 50% less instances that kSubS.*
-* *(top, right) AdaSubS solves much more problems within small budgets than the baselines.*
-* *(bottom) Despite the BF-kSubS ES uses perfect policy and includes no intermediate nodes to the computational budget, AdaSubS still shows superior performance.*
